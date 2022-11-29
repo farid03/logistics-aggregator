@@ -1,0 +1,15 @@
+delete from user_type;
+delete from user_state;
+delete from order_state;
+delete from sys_user;
+delete from user_rights;
+delete from color;
+delete from car_body_type;
+delete from loading_places;
+delete from position;
+delete from car;
+delete from specification;
+delete from feedback;
+delete from executor_order;
+delete from required_specification;
+delete from customer_order;
