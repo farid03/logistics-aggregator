@@ -1,0 +1,392 @@
+openapi: 3.0.0
+info:
+  description: Aгрегатор логистических заказов
+  title: logistics-aggregator
+  contact:
+    email: f.kurbanov120303@yandex.ru
+  version: "1.0"
+paths:
+  /auth:
+    post:
+      tags:
+        - Пользователи
+      description: |
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                username:
+                  type: array
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Вставка или обновление прошли успешно.
+        "400":
+          description: Невалидная схема документа или входные данные не верны.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 400,
+                      "message": "Validation Failed"
+                    }
+  /registration:
+    post:
+      tags:
+        - Пользователи
+      description: |
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: Регистрация прошла успешно.
+        "400":
+          description: Невалидная схема документа или входные данные не верны.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 400,
+                      "message": "Validation Failed"
+                    }
+  /order/{id}:
+    get:
+      tags:
+        - Пользователи
+      description: |
+      parameters:
+        - description: Идентификатор
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+          description: Удаление прошло успешно.
+        "400":
+          description: Невалидная схема документа или входные данные не верны.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      tags:
+        - Пользователи
+      description: |
+      parameters:
+        - description: Идентификатор
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Удаление прошло успешно.
+        "400":
+          description: Невалидная схема документа или входные данные не верны.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 400,
+                      "message": "Validation Failed"
+                    }
+        "404":
+          description: Элемент не найден.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 404,
+                      "message": "Item not found"
+                    }
+
+components:
+  schemas:
+    UserType:
+      type: string
+      description: Тип пользователя
+      enum:
+        - EXECUTOR
+        - CUSTOMER
+        - ADMIN
+
+    UserState:
+      type: string
+      description: Состояние пользователя
+      enum:
+        - ACTIVE
+        - BANNED
+        - SUSPENDED
+
+    User:
+      type: object
+      description: Пользователь системы
+      required:
+        - id
+        - username
+        - password
+        - name
+        - surname
+        - userType
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          description: Уникальный идентификатор пользователя
+          example: "3fa85f64-5717-4562-b3fc-2c963f66a333"
+        username:
+          description: Уникальный никнейм пользователя
+          type: string
+          nullable: false
+        password:
+          type: string
+          nullable: false
+          description: Пароль пользователя
+          example: "2022-05-28T21:12:01.000Z"
+        name:
+          type: string
+          nullable: false
+          description: Имя пользователя
+          example: "Иван"
+        surname:
+          type: string
+          nullable: false
+          description: Фамилия пользователя
+          example: "Иванов"
+        userState:
+          $ref: "#/components/schemas/UserState"
+        userType:
+          $ref: "#/components/schemas/UserType"
+
+    TrailerType:
+      type: string
+      description: Тип прицепа грузовика
+      enum:
+        - DryVan
+        - Flatbed
+        - Refrigerated
+        - DropDeck
+        - Step-Deck
+        - DoubleDrop
+        - Lowboy
+        - HotShot
+        - Conestoga
+        - Curtainside
+
+    LoadingPlaces:
+      type: string
+      description: Места погрузки прицепа автомобиля
+      enum:
+        - BACK
+        - LEFT
+        - RIGHT
+        - TOP
+
+    Position:
+      type: object
+      description: Координаты точки на карте
+      required:
+        - id
+        - latitude
+        - longitude
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          description: Уникальный идентификатор записи координат
+          example: "3fa85f64-5717-4562-b3fc-2c963f66a333"
+        latitude:
+          description: Широта
+          type: number
+          nullable: false
+        longitude:
+          description: Долгота
+          type: number
+          nullable: false
+
+    Specification:
+      required:
+        - id
+        - length
+        - height
+        - width
+        - color
+        - bodyType
+        - loadingPlaces
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          description: Уникальный идентификатор автомобиля
+          example: "3fa85f64-5717-4562-b3fc-2c963f66a333"
+        length:
+          description: Длина прицепа автомобиля
+          type: number
+          nullable: false
+        height:
+          description: Высота прицепа автомобиля
+          type: number
+          nullable: false
+        width:
+          description: Ширина прицепа автомобиля
+          type: number
+          nullable: false
+        color:
+          description: Цвет прицепа автомобиля
+          format: rgb
+          type: string
+          nullable: false
+          example: "#FFFFFF"
+        bodyType:
+          $ref: "#/components/schemas/TrailerType"
+        loadingPlaces:
+          $ref: "#/components/schemas/LoadingPlaces"
+
+    Car:
+      required:
+        - id
+        - owner
+        - licensePlate
+        - position
+        - specification
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          description: Уникальный идентификатор автомобиля
+          example: "3fa85f64-5717-4562-b3fc-2c963f66a333"
+        owner:
+          $ref: "#/components/schemas/User"
+        licensePlate:
+          description: Государственный регистрационный знак автомобиля
+          type: string
+          nullable: false
+        position:
+          $ref: "#/components/schemas/Position"
+        specification:
+          $ref: "#/components/schemas/Specification"
+
+    OrderState:
+      type: string
+      description: Состояние заказа
+      enum:
+        - REQUESTED
+        - IN_PROGRESS
+        - COMPLETED
+
+    Order:
+      required:
+        - id
+        - owner
+        - title
+        - description
+        - price
+        - state
+        - from
+        - to
+        - specification
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          description: Уникальный идентификатор автомобиля
+          example: "3fa85f64-5717-4562-b3fc-2c963f66a333"
+        owner:
+          $ref: "#/components/schemas/User"
+        title:
+          description: Заголовок заказа
+          type: string
+          nullable: false
+        description:
+          description: Описание заказа
+          type: string
+          nullable: false
+        price:
+          description: Цена за исполнение заказа
+          type: number
+          nullable: false
+        state:
+          $ref: "#/components/schemas/OrderState"
+        from:
+          $ref: "#/components/schemas/Position"
+        to:
+          $ref: "#/components/schemas/Position"
+        specification:
+          $ref: "#/components/schemas/Specification"
+
+    Feedback:
+      required:
+        - id
+        - author
+        - receiver
+        - order
+        - description
+        - points
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          description: Уникальный идентификатор отзыва
+          example: "3fa85f64-5717-4562-b3fc-2c963f66a333"
+        author:
+          $ref: "#/components/schemas/User"
+        receiver:
+          $ref: "#/components/schemas/User"
+        order:
+          $ref: "#/components/schemas/Order"
+        description:
+          type: string
+          nullable: false
+          description: Комментарий к отзыву
+        points:
+          type: integer
+          nullable: false
+          description: Оценка заказа
+
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          nullable: false
+          type: integer
+        message:
+          nullable: false
+          type: string
