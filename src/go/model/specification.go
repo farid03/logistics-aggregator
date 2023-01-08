@@ -28,9 +28,9 @@ type Specification struct {
 	// Цвет прицепа автомобиля
 	Color string `json:"color" gorm:"size:7;not null"`
 
-	BodyType *TrailerType `json:"bodyType" gorm:"not null"`
+	BodyType TrailerType `json:"bodyType" gorm:"not null"`
 
-	LoadingPlaces *LoadingPlaces `json:"loadingPlaces" gorm:"not null"`
+	LoadingPlaces LoadingPlaces `json:"loadingPlaces" gorm:"not null"`
 }
 
 func (u *Specification) Scan(src interface{}) error {

@@ -29,9 +29,9 @@ type User struct {
 	// Фамилия пользователя
 	Surname string `json:"surname" gorm:"size:255;not null"`
 
-	UserState *UserState `json:"userState,omitempty" gorm:"not null"`
+	UserState UserState `json:"userState,omitempty" gorm:"not null"`
 
-	UserType *UserType `json:"userType" gorm:"not null"`
+	UserType UserType `json:"userType" gorm:"not null"`
 }
 
 func (u *User) Scan(src interface{}) error {
