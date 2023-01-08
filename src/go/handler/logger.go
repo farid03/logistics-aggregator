@@ -1,4 +1,4 @@
-package swagger
+package handler
 
 import (
 	"log"
