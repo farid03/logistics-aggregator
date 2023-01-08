@@ -37,10 +37,19 @@ paths:
                       "message": "Validation Failed"
                     }
   /registration:
+    get:
+      tags:
+        - Пользователи
+      description: Страница для регистрации пользователя
+      responses:
+        "200":
+          description: Страница загрузилась успешно.
+        "404":
+          description: Страница не найдена.
     post:
       tags:
         - Пользователи
-      description: |
+      description: Регистрация пользователя
       requestBody:
         content:
           application/json:
@@ -62,6 +71,7 @@ paths:
                       "code": 400,
                       "message": "Validation Failed"
                     }
+
   /order/{id}:
     get:
       tags:
