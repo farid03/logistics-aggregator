@@ -2,17 +2,17 @@ package main
 
 import (
 	"log"
-	sw "logistics-aggregator/src/go"
+	storage "logistics-aggregator/src/go"
+	"logistics-aggregator/src/go/handler"
 	"net/http"
 )
 
 func init() {
-	sw.ConnectDB()
+	storage.ConnectDB()
 }
 
 func main() {
 	log.Printf("Server started")
-
-	router := sw.NewRouter()
+	router := handler.NewRouter()
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
