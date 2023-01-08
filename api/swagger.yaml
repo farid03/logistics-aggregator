@@ -73,8 +73,7 @@ paths:
           name: id
           required: true
           schema:
-            type: string
-            format: uuid
+            type: integer
       responses:
         "200":
           content:
@@ -98,8 +97,7 @@ paths:
           name: id
           required: true
           schema:
-            type: string
-            format: uuid
+            type: integer
       responses:
         "200":
           description: Удаление прошло успешно.
@@ -160,11 +158,9 @@ components:
         - userType
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
           nullable: false
           description: Уникальный идентификатор пользователя
-          example: "3fa85f64-5717-4562-b3fc-2c963f66a333"
         username:
           description: Уникальный никнейм пользователя
           type: string
@@ -222,11 +218,9 @@ components:
         - longitude
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
           nullable: false
           description: Уникальный идентификатор записи координат
-          example: "3fa85f64-5717-4562-b3fc-2c963f66a333"
         latitude:
           description: Широта
           type: number
@@ -247,11 +241,9 @@ components:
         - loadingPlaces
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
           nullable: false
           description: Уникальный идентификатор автомобиля
-          example: "3fa85f64-5717-4562-b3fc-2c963f66a333"
         length:
           description: Длина прицепа автомобиля
           type: number
@@ -284,11 +276,9 @@ components:
         - specification
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
           nullable: false
           description: Уникальный идентификатор автомобиля
-          example: "3fa85f64-5717-4562-b3fc-2c963f66a333"
         owner:
           $ref: "#/components/schemas/User"
         licensePlate:
@@ -321,11 +311,9 @@ components:
         - specification
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
           nullable: false
           description: Уникальный идентификатор автомобиля
-          example: "3fa85f64-5717-4562-b3fc-2c963f66a333"
         owner:
           $ref: "#/components/schemas/User"
         title:
@@ -359,11 +347,9 @@ components:
         - points
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
           nullable: false
           description: Уникальный идентификатор отзыва
-          example: "3fa85f64-5717-4562-b3fc-2c963f66a333"
         author:
           $ref: "#/components/schemas/User"
         receiver:

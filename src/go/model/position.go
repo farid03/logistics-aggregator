@@ -1,5 +1,11 @@
 package model
 
+import (
+	"database/sql/driver"
+	"encoding/json"
+	"fmt"
+)
+
 /*
  * logistics-aggregator
  *
@@ -13,9 +19,24 @@ package model
 // Position Координаты точки на карте
 type Position struct {
 	// Уникальный идентификатор записи координат
-	Id string `json:"id"`
+	ID uint32 `json:"id" gorm:"primary_key;auto_increment"`
 	// Широта
-	Latitude float64 `json:"latitude"`
+	Latitude float64 `json:"latitude" gorm:"check:Latitude >= 0;check:Latitude <= 90;not null"`
 	// Долгота
-	Longitude float64 `json:"longitude"`
+	Longitude float64 `json:"longitude" gorm:"check:Longitude >= -180;check:Longitude <= 180;not null"`
+}
+
+func (u *Position) Scan(src interface{}) error {
+	switch v := src.(type) {
+	case string:
+		return json.Unmarshal([]byte(v), u)
+	case []byte:
+		return json.Unmarshal(v, u)
+	}
+	return fmt.Errorf("cannot convert %T to My struct", src)
+}
+
+//nolint:hugeParam
+func (u Position) Value() (driver.Value, error) {
+	return json.Marshal(u)
 }

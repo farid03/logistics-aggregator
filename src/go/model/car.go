@@ -12,13 +12,13 @@ package model
 
 type Car struct {
 	// Уникальный идентификатор автомобиля
-	Id string `json:"id"`
+	ID uint32 `json:"id" gorm:"primary_key;auto_increment"`
 
-	Owner *User `json:"owner"`
+	Owner *User `json:"owner" gorm:"not null"`
 	// Государственный регистрационный знак автомобиля
-	LicensePlate string `json:"licensePlate"`
+	LicensePlate string `json:"licensePlate" gorm:"size:10;not null;unique"`
 
 	Position *Position `json:"position"`
 
-	Specification *Specification `json:"specification"`
+	Specification *Specification `json:"specification" gorm:"not null"`
 }

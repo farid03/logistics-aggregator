@@ -1,5 +1,11 @@
 package model
 
+import (
+	"database/sql/driver"
+	"encoding/json"
+	"fmt"
+)
+
 /*
  * logistics-aggregator
  *
@@ -12,17 +18,32 @@ package model
 
 type Specification struct {
 	// Уникальный идентификатор автомобиля
-	Id string `json:"id"`
+	ID uint32 `json:"id" gorm:"primary_key;auto_increment"`
 	// Длина прицепа автомобиля
-	Length float64 `json:"length"`
+	Length float64 `json:"length" gorm:"check:Length > 0;not null"`
 	// Высота прицепа автомобиля
-	Height float64 `json:"height"`
+	Height float64 `json:"height" gorm:"check:Height > 0;not null"`
 	// Ширина прицепа автомобиля
-	Width float64 `json:"width"`
+	Width float64 `json:"width" gorm:"check:Width > 0;not null"`
 	// Цвет прицепа автомобиля
-	Color string `json:"color"`
+	Color string `json:"color" gorm:"size:7;not null"`
 
-	BodyType *TrailerType `json:"bodyType"`
+	BodyType *TrailerType `json:"bodyType" gorm:"not null"`
 
-	LoadingPlaces *LoadingPlaces `json:"loadingPlaces"`
+	LoadingPlaces *LoadingPlaces `json:"loadingPlaces" gorm:"not null"`
+}
+
+func (u *Specification) Scan(src interface{}) error {
+	switch v := src.(type) {
+	case string:
+		return json.Unmarshal([]byte(v), u)
+	case []byte:
+		return json.Unmarshal(v, u)
+	}
+	return fmt.Errorf("cannot convert %T to My struct", src)
+}
+
+//nolint:hugeParam
+func (u Specification) Value() (driver.Value, error) {
+	return json.Marshal(u)
 }

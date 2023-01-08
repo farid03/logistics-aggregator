@@ -1,5 +1,11 @@
 package model
 
+import (
+	"database/sql/driver"
+	"encoding/json"
+	"fmt"
+)
+
 /*
  * logistics-aggregator
  *
@@ -13,17 +19,32 @@ package model
 // User Пользователь системы
 type User struct {
 	// Уникальный идентификатор пользователя
-	Id string `json:"id"`
+	ID uint32 `json:"id" gorm:"primary_key;auto_increment"`
 	// Уникальный никнейм пользователя
-	Username string `json:"username"`
+	Username string `json:"username" gorm:"size:100;not null;unique"`
 	// Пароль пользователя
-	Password string `json:"password"`
+	Password string `json:"password" gorm:"size:255;not null"`
 	// Имя пользователя
-	Name string `json:"name"`
+	Name string `json:"name" gorm:"size:255;not null"`
 	// Фамилия пользователя
-	Surname string `json:"surname"`
+	Surname string `json:"surname" gorm:"size:255;not null"`
 
-	UserState *UserState `json:"userState,omitempty"`
+	UserState *UserState `json:"userState,omitempty" gorm:"not null"`
 
-	UserType *UserType `json:"userType"`
+	UserType *UserType `json:"userType" gorm:"not null"`
+}
+
+func (u *User) Scan(src interface{}) error {
+	switch v := src.(type) {
+	case string:
+		return json.Unmarshal([]byte(v), u)
+	case []byte:
+		return json.Unmarshal(v, u)
+	}
+	return fmt.Errorf("cannot convert %T to My struct", src)
+}
+
+//nolint:hugeParam
+func (u User) Value() (driver.Value, error) {
+	return json.Marshal(u)
 }
