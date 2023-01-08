@@ -6,12 +6,13 @@ import (
 	"net/http"
 )
 
+func init() {
+	sw.ConnectDB()
+}
+
 func main() {
 	log.Printf("Server started")
 
 	router := sw.NewRouter()
-	sw.ConnectDB()
-
 	log.Fatal(http.ListenAndServe(":8080", router))
-
 }
