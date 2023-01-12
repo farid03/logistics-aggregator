@@ -1,11 +1,5 @@
 package model
 
-import (
-	"database/sql/driver"
-	"encoding/json"
-	"fmt"
-)
-
 /*
  * logistics-aggregator
  *
@@ -24,19 +18,4 @@ type Position struct {
 	Latitude float64 `json:"latitude" gorm:"check:Latitude >= 0;check:Latitude <= 90;not null"`
 	// Долгота
 	Longitude float64 `json:"longitude" gorm:"check:Longitude >= -180;check:Longitude <= 180;not null"`
-}
-
-func (u *Position) Scan(src interface{}) error {
-	switch v := src.(type) {
-	case string:
-		return json.Unmarshal([]byte(v), u)
-	case []byte:
-		return json.Unmarshal(v, u)
-	}
-	return fmt.Errorf("cannot convert %T to My struct", src)
-}
-
-//nolint:hugeParam
-func (u Position) Value() (driver.Value, error) {
-	return json.Marshal(u)
 }

@@ -14,11 +14,14 @@ type Car struct {
 	// Уникальный идентификатор автомобиля
 	ID uint32 `json:"id" gorm:"primary_key;auto_increment"`
 
-	Owner *User `json:"owner" gorm:"not null"`
+	OwnerID uint32 `json:"owner_id"`
+	Owner   User   `json:"owner" gorm:"ForeignKey:OwnerID;not null"`
 	// Государственный регистрационный знак автомобиля
 	LicensePlate string `json:"licensePlate" gorm:"size:10;not null;unique"`
 
-	Position *Position `json:"position"`
+	PositionID uint32    `json:"position_id"`
+	Position   *Position `json:"position" gorm:"ForeignKey:PositionID"`
 
-	Specification *Specification `json:"specification" gorm:"not null"`
+	SpecificationID uint32         `json:"specification_id"`
+	Specification   *Specification `json:"specification" gorm:"ForeignKey:SpecificationID;not null"`
 }

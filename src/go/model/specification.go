@@ -1,11 +1,5 @@
 package model
 
-import (
-	"database/sql/driver"
-	"encoding/json"
-	"fmt"
-)
-
 /*
  * logistics-aggregator
  *
@@ -31,19 +25,4 @@ type Specification struct {
 	BodyType TrailerType `json:"bodyType" gorm:"not null"`
 
 	LoadingPlaces LoadingPlaces `json:"loadingPlaces" gorm:"not null"`
-}
-
-func (u *Specification) Scan(src interface{}) error {
-	switch v := src.(type) {
-	case string:
-		return json.Unmarshal([]byte(v), u)
-	case []byte:
-		return json.Unmarshal(v, u)
-	}
-	return fmt.Errorf("cannot convert %T to My struct", src)
-}
-
-//nolint:hugeParam
-func (u Specification) Value() (driver.Value, error) {
-	return json.Marshal(u)
 }

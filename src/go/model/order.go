@@ -1,11 +1,5 @@
 package model
 
-import (
-	"database/sql/driver"
-	"encoding/json"
-	"fmt"
-)
-
 /*
  * logistics-aggregator
  *
@@ -20,7 +14,8 @@ type Order struct {
 	// Уникальный идентификатор автомобиля
 	ID uint32 `json:"id" gorm:"primary_key;auto_increment"`
 
-	Owner *User `json:"owner" gorm:"not null"`
+	OwnerID uint32 `json:"owner_id"`
+	Owner   User   `json:"owner" gorm:"ForeignKey:OwnerID;not null"`
 	// Заголовок заказа
 	Title string `json:"title" gorm:"not null"`
 	// Описание заказа
@@ -28,26 +23,14 @@ type Order struct {
 	// Цена за исполнение заказа
 	Price float64 `json:"price" gorm:"check:Price > 0;not null"`
 
-	State *OrderState `json:"state" gorm:"not null"`
+	State OrderState `json:"state" gorm:"not null"`
 
-	From *Position `json:"from" gorm:"not null"`
+	FromID uint32   `json:"from_id"`
+	From   Position `json:"from" gorm:"ForeignKey:FromID;not null"`
 
-	To *Position `json:"to" gorm:"not null"`
+	ToID uint32   `json:"to_id"`
+	To   Position `json:"to" gorm:"ForeignKey:ToID;not null"`
 
-	Specification *Specification `json:"specification" gorm:"not null"`
-}
-
-func (u *Order) Scan(src interface{}) error {
-	switch v := src.(type) {
-	case string:
-		return json.Unmarshal([]byte(v), u)
-	case []byte:
-		return json.Unmarshal(v, u)
-	}
-	return fmt.Errorf("cannot convert %T to My struct", src)
-}
-
-//nolint:hugeParam
-func (u Order) Value() (driver.Value, error) {
-	return json.Marshal(u)
+	SpecificationID uint32        `json:"specification_id"`
+	Specification   Specification `json:"specification" gorm:"ForeignKey:SpecificationID;not null"`
 }

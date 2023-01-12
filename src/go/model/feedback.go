@@ -12,13 +12,15 @@ package model
 
 type Feedback struct {
 	// Уникальный идентификатор отзыва
-	ID uint32 `json:"id" gorm:"primary_key;auto_increment"`
+	ID       uint32 `json:"id" gorm:"primary_key;auto_increment"`
+	AuthorID uint32 `json:"author_id"`
+	Author   User   `json:"author" gorm:"ForeignKey:AuthorID;not null"`
 
-	Author *User `json:"author" gorm:"not null"`
+	ReceiverID uint32 `json:"receiver_id"`
+	Receiver   User   `json:"receiver" gorm:"ForeignKey:ReceiverID;not null"`
 
-	Receiver *User `json:"receiver" gorm:"not null"`
-
-	Order *Order `json:"order" gorm:"not null"`
+	OrderID uint32 `json:"order_id"`
+	Order   Order  `json:"order" gorm:"ForeignKey:OrderID;not null"`
 	// Комментарий к отзыву
 	Description string `json:"description" gorm:"not null"`
 	// Оценка заказа
