@@ -29,6 +29,8 @@ func NewRouter() *mux.Router {
 			Name(route.Name).
 			Handler(handler)
 	}
+	s := http.StripPrefix("/static/", http.FileServer(http.Dir("./resources/static/"))) // file server
+	router.PathPrefix("/static/").Handler(s)
 
 	return router
 }
@@ -36,9 +38,23 @@ func NewRouter() *mux.Router {
 var routes = Routes{
 	Route{
 		"Index",
-		"GET",
+		strings.ToUpper("Get"),
 		"/",
 		Index,
+	},
+
+	Route{
+		"Main",
+		strings.ToUpper("Get"),
+		"/main",
+		Main,
+	},
+
+	Route{
+		"AuthGet",
+		strings.ToUpper("Get"),
+		"/auth",
+		AuthGet,
 	},
 
 	Route{
@@ -46,6 +62,34 @@ var routes = Routes{
 		strings.ToUpper("Post"),
 		"/auth",
 		AuthPost,
+	},
+
+	Route{
+		"LogoutGet",
+		strings.ToUpper("Get"), // да, лучше было бы сделать POST
+		"/logout",
+		LogoutGet,
+	},
+
+	Route{
+		"AddAdvertGet",
+		strings.ToUpper("Get"),
+		"/advert",
+		AddAdvertGet,
+	},
+
+	Route{
+		"AddAdvertPost",
+		strings.ToUpper("Post"),
+		"/advert",
+		AddAdvertPost,
+	},
+
+	Route{
+		"AddCarPost",
+		strings.ToUpper("Post"),
+		"/car",
+		AddCarPost,
 	},
 
 	Route{

@@ -7,6 +7,13 @@ info:
   version: "1.0"
 paths:
   /auth:
+    get:
+      tags:
+        - Пользователи
+      description: Возвращает страницу с профилем пользователя
+      responses:
+        "200":
+          description: |
     post:
       tags:
         - Пользователи
@@ -36,6 +43,91 @@ paths:
                       "code": 400,
                       "message": "Validation Failed"
                     }
+  /main:
+    get:
+      tags:
+        - Пользователи
+      description: Возвращает главную страницу.
+      responses:
+        "200":
+          description: Пользователь авторизован и страница успешно загружена.
+        "403":
+          description: Пользователь не авторизован.
+        "500":
+          description: Не найдены шаблонные файлы необходимые для рендеринга страницы.
+  /logout:
+    get:
+      tags:
+        - Пользователи
+      description: Выход из системы
+      responses:
+        "200":
+          description: Выход произошел успешно.
+
+  /advert:
+    get:
+      tags:
+        - Пользователи
+      description: Возвращает страницу для добавления нового объявления.
+      responses:
+        "200":
+          description: Страница загрузилась успешно.
+        "403":
+          description: Пользователь не авторизован.
+        "404":
+          description: Страница не найдена.
+    post:
+      tags:
+        - Пользователи
+      description: Добавление нового объявления в базу данных.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Order"
+      responses:
+        "200":
+          description: Добавление прошло успешно.
+        "400":
+          description: Невалидная схема документа или входные данные неверны.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 400,
+                      "message": "Validation Failed"
+                    }
+  /car:
+    post:
+      tags:
+        - Пользователи
+      description: Добавление нового грузовика в базу данных.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Car"
+      responses:
+        "200":
+          description: Добавление прошло успешно.
+        "400":
+          description: Невалидная схема документа или входные данные неверны.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                response:
+                  value: |-
+                    {
+                      "code": 400,
+                      "message": "Validation Failed"
+                    }
+
   /registration:
     get:
       tags:
@@ -59,7 +151,7 @@ paths:
         "200":
           description: Регистрация прошла успешно.
         "400":
-          description: Невалидная схема документа или входные данные не верны.
+          description: Невалидная схема документа или входные данные неверны.
           content:
             application/json:
               schema:
@@ -90,9 +182,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Order"
-          description: Удаление прошло успешно.
+          description: Запрос данных прошел успешно.
         "400":
-          description: Невалидная схема документа или входные данные не верны.
+          description: Невалидная схема документа или входные данные неверны.
           content:
             application/json:
               schema:
@@ -112,7 +204,7 @@ paths:
         "200":
           description: Удаление прошло успешно.
         "400":
-          description: Невалидная схема документа или входные данные не верны.
+          description: Невалидная схема документа или входные данные неверны.
           content:
             application/json:
               schema:
