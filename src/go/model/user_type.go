@@ -15,7 +15,6 @@ type UserType string
 
 // List of UserType
 const (
-	EXECUTOR UserType = "EXECUTOR"
-	CUSTOMER UserType = "CUSTOMER"
+	STANDARD UserType = "STANDARD"
 	ADMIN    UserType = "ADMIN"
 )

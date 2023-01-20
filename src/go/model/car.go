@@ -19,9 +19,9 @@ type Car struct {
 	// Государственный регистрационный знак автомобиля
 	LicensePlate string `json:"licensePlate" gorm:"size:10;not null;unique"`
 
-	PositionID uint32    `json:"position_id"`
-	Position   *Position `json:"position" gorm:"ForeignKey:PositionID"`
+	PositionID uint32   `json:"position_id"`
+	Position   Position `json:"position" gorm:"ForeignKey:PositionID"`
 
-	SpecificationID uint32         `json:"specification_id"`
-	Specification   *Specification `json:"specification" gorm:"ForeignKey:SpecificationID;not null"`
+	SpecificationID uint32        `json:"specification_id"`
+	Specification   Specification `json:"specification" gorm:"ForeignKey:SpecificationID;not null"`
 }
