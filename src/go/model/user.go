@@ -13,17 +13,17 @@ package model
 // User Пользователь системы
 type User struct {
 	// Уникальный идентификатор пользователя
-	ID uint32 `json:"id" gorm:"primary_key;auto_increment"`
+	ID uint32 `gorm:"primary_key;auto_increment"`
 	// Уникальный никнейм пользователя
-	Username string `json:"username" gorm:"size:100;not null;unique"`
+	Username string `gorm:"size:100;not null;unique"`
 	// Пароль пользователя
-	Password string `json:"password" gorm:"size:255;not null"`
+	Password string `gorm:"size:255;not null"`
 	// Имя пользователя
-	Name string `json:"name" gorm:"size:255;not null"`
+	Name string `gorm:"size:255;not null"`
 	// Фамилия пользователя
-	Surname string `json:"surname" gorm:"size:255;not null"`
+	Surname string `gorm:"size:255;not null"`
 
-	UserState UserState `json:"userState" gorm:"not null"`
+	UserState UserState `gorm:"not null"`
 
-	UserType UserType `json:"userType" gorm:"not null"`
+	UserType UserType `gorm:"not null"`
 }

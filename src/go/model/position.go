@@ -13,9 +13,9 @@ package model
 // Position Координаты точки на карте
 type Position struct {
 	// Уникальный идентификатор записи координат
-	ID uint32 `json:"id" gorm:"primary_key;auto_increment"`
+	ID uint32 `gorm:"primary_key;auto_increment"`
 	// Широта
-	Latitude float64 `json:"latitude" gorm:"check:Latitude >= 0;check:Latitude <= 90;not null"`
+	Latitude float64 `gorm:"check:Latitude >= 0;check:Latitude <= 90;not null"`
 	// Долгота
-	Longitude float64 `json:"longitude" gorm:"check:Longitude >= -180;check:Longitude <= 180;not null"`
+	Longitude float64 `gorm:"check:Longitude >= -180;check:Longitude <= 180;not null"`
 }

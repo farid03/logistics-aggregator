@@ -12,17 +12,17 @@ package model
 
 type Specification struct {
 	// Уникальный идентификатор автомобиля
-	ID uint32 `json:"id" gorm:"primary_key;auto_increment"`
+	ID uint32 `gorm:"primary_key;auto_increment"`
 	// Длина прицепа автомобиля
-	Length float64 `json:"length" gorm:"check:Length > 0;not null"`
+	Length float64 `gorm:"check:Length > 0;not null"`
 	// Высота прицепа автомобиля
-	Height float64 `json:"height" gorm:"check:Height > 0;not null"`
+	Height float64 `gorm:"check:Height > 0;not null"`
 	// Ширина прицепа автомобиля
-	Width float64 `json:"width" gorm:"check:Width > 0;not null"`
+	Width float64 `gorm:"check:Width > 0;not null"`
 	// Цвет прицепа автомобиля
-	Color string `json:"color" gorm:"size:7;not null"`
+	Color string `gorm:"size:7;not null"`
 
-	BodyType TrailerType `json:"bodyType" gorm:"not null"`
+	BodyType TrailerType `gorm:"not null"`
 
-	LoadingPlaces LoadingPlaces `json:"loadingPlaces" gorm:"not null"`
+	LoadingPlaces LoadingPlaces `gorm:"not null"`
 }

@@ -12,25 +12,30 @@ package model
 
 type Order struct {
 	// Уникальный идентификатор автомобиля
-	ID uint32 `json:"id" gorm:"primary_key;auto_increment"`
+	ID uint32 `gorm:"primary_key;auto_increment"`
 
-	OwnerID uint32 `json:"owner_id"`
-	Owner   User   `json:"owner" gorm:"ForeignKey:OwnerID;not null"`
+	OwnerID uint32
+	Owner   User `gorm:"not null"`
+
+	ExecutorIDRefer uint32 // TODO добавить в swagger
+
+	ExecutorCarIDRefer uint32 // TODO добавить в swagger
+
 	// Заголовок заказа
-	Title string `json:"title" gorm:"not null"`
+	Title string `gorm:"not null"`
 	// Описание заказа
-	Description string `json:"description" gorm:"not null"`
+	Description string `gorm:"not null"`
 	// Цена за исполнение заказа
-	Price float64 `json:"price" gorm:"check:Price > 0;not null"`
+	Price float64 `gorm:"check:Price > 0;not null"`
 
-	State OrderState `json:"state" gorm:"not null"`
+	State OrderState `gorm:"not null"`
 
-	FromID uint32   `json:"from_id"`
-	From   Position `json:"from" gorm:"ForeignKey:FromID;not null"`
+	FromID uint32
+	From   Position `gorm:"not null"`
 
-	ToID uint32   `json:"to_id"`
-	To   Position `json:"to" gorm:"ForeignKey:ToID;not null"`
+	ToID uint32
+	To   Position `gorm:"not null"`
 
-	SpecificationID uint32        `json:"specification_id"`
-	Specification   Specification `json:"specification" gorm:"ForeignKey:SpecificationID;not null"`
+	SpecificationID uint32
+	Specification   Specification `gorm:"not null"`
 }
