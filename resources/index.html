@@ -13,12 +13,12 @@
 <form method="POST" action="/auth">
     <div class="mb-3 col-md-3 mx-auto">
         <label for="username" class="form-label">Username</label>
-        <input name="username" type="text" class="form-control" id="username" aria-describedby="usernameHelp">
+        <input name="username" type="text" class="form-control" id="username" aria-describedby="usernameHelp" required>
         <div id="usernameHelp" class="form-text">Your username.</div>
     </div>
     <div class="mb-3 col-md-3 mx-auto">
         <label for="password" class="form-label">Password</label>
-        <input name="password" type="password" class="form-control" id="password">
+        <input name="password" type="password" class="form-control" id="password" required>
         <div id="passwordHelp" class="form-text">Your password.</div>
     </div>
     <div class="col-md-3 mx-auto">

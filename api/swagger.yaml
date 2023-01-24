@@ -236,8 +236,7 @@ components:
       type: string
       description: Тип пользователя
       enum:
-        - EXECUTOR
-        - CUSTOMER
+        - STANDARD
         - ADMIN
 
     UserState:

@@ -6,11 +6,21 @@
     <title>Logistic</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    {{template "yandex-maps-api"}}
+    <script src="scripts/deliveryCalculator.js" type="text/javascript"></script>
+    <style>
+        body, html, form {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
 {{template "header"}}
 
-<h1 class="mt-3 col-md-5 mx-auto">Add new advertisement</h1>
+<h1 class="mt-3 col-md-5 mx-auto">Add new order</h1>
 
 <form method="POST" action="/advert">
     <div class="mb-3 col-md-5 mx-auto">
@@ -23,37 +33,46 @@
     </div>
     <div class="mb-3 col-md-5 mx-auto">
         <label for="price" class="form-label">Price</label>
-        <input name="price" type="number" class="form-control" id="price" aria-describedby="priceHelp" required>
+        <input name="price" type="number" class="form-control" id="price" aria-describedby="priceHelp" min="0" required>
     </div>
-    <div class="row justify-content-center mb-3">
+    <div class="row justify-content-center mb-3 visually-hidden">
+<!--        клики по карте yandex-map-api
+             обратное геокодирование: https://yandex.ru/dev/maps/jsbox/2.1/event_reverse_geocode
+             доступ к координатам по e.get('coords')
+             может быть полезно: https://yandex.ru/dev/maps/jsbox/2.1/deliveryCalculator -->
         <div class="col-md-2">
-            <label for="from" class="form-label">From</label>
-            <input name="from" type="text" class="form-control" id="from" aria-describedby="fromHelp">
+            <label for="from-lt" class="form-label">From</label>
+            <input name="from-latitude" type="text" class="form-control" id="from-lt" aria-describedby="fromHelp" required>
+            <input name="from-longitude" type="text" class="form-control" id="from-lg" aria-describedby="fromHelp" required>
         </div>
         <div class="col-md-2">
-            <label for="to" class="form-label">To</label>
-            <input name="to" type="text" class="form-control" id="to" aria-describedby="toHelp">
+            <label for="to-lt" class="form-label">To</label>
+            <input name="to-latitude" type="text" class="form-control" id="to-lt" aria-describedby="toHelp" required>
+            <input name="to-longitude" type="text" class="form-control" id="to-lg" aria-describedby="toHelp" required>
         </div>
     </div>
+
+    <div id="map" class="col-md-5 mx-auto justify-content-center mb-3 border" style="width: 45%; height: 50%;"></div>
+
     <div class="container col-md-5">
         <label class="fw-bold" for="dimensions">Cargo dimensions:</label>
         <div id="dimensions" class="row mb-3 justify-content-around">
             <div class="col-sm">
                 <label for="length" class="form-label">Length</label>
-                <input name="length" type="number" class="form-control" id="length" aria-describedby="lengthHelp">
+                <input name="length" type="number" class="form-control" id="length" aria-describedby="lengthHelp" min="0" required>
             </div>
             <div class="col-sm">
                 <label for="width" class="form-label">Width</label>
-                <input name="width" type="number" class="form-control" id="width" aria-describedby="widthHelp">
+                <input name="width" type="number" class="form-control" id="width" aria-describedby="widthHelp" min="0" required>
             </div>
             <div class="col-sm ">
                 <label for="height" class="form-label">Height</label>
-                <input name="height" type="number" class="form-control" id="height" aria-describedby="heightHelp">
+                <input name="height" type="number" class="form-control" id="height" aria-describedby="heightHelp" min="0" required>
             </div>
         </div>
         <div class="mb-3">
             <label for="trailerType" class="form-label">Trailer Type</label>
-            <select id="trailerType" class="form-control">
+            <select id="trailerType" class="form-control" required>
                 <option>Dry Van</option>
                 <option>Flatbed</option>
                 <option>Refrigerated</option>
@@ -68,7 +87,7 @@
         </div>
         <div class="mb-3">
             <label for="loadingPlaces" class="form-label">Loading Places</label>
-            <select id="loadingPlaces" class="form-control">
+            <select id="loadingPlaces" class="form-control" required>
                 <option>Back</option>
                 <option>Left</option>
                 <option>Right</option>

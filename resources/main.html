@@ -1,33 +1,46 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Logistic</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    {{template "yandex-maps-api"}}
+    <script defer src="scripts/geocode.js" type="text/javascript"></script>
 </head>
 <body>
 {{template "header"}}
+
 <h1 class="mt-3 text-center">Main Page</h1>
 
+<h2 class="mt-3 text-center">Orders</h2>
 <div class="col-md-5 mx-auto">
 <table class="table table-sm">
     <thead class="table-light">
     <tr>
         <th scope="col">#</th>
-        <th scope="col">Username</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Фамилия</th>
+        <th scope="col">Title</th>
+        <th scope="col">Price</th>
+        <th scope="col">State</th>
+        <th scope="col">From</th>
+        <th scope="col">To</th>
+        <th scope="col">Execute</th>
     </tr>
     </thead>
     <tbody>
-    {{range .}}
+    {{range $index, $element := .}}
     <tr>
-        <td>{{.ID}}</td>
-        <td>{{.Username}}</td>
-        <td>{{.Name}}</td>
-        <td>{{.Surname}}</td>
+        <td>{{$index}}</td>
+        <td>{{$element.Title}}</td>
+        <td>{{$element.Price}}</td>
+        <td>{{$element.State}}</td>
+        <td class="geocode">{{$element.From}}</td>
+        <td class="geocode">{{$element.To}}</td>
+        {{if eq $element.State "REQUESTED"}}
+            <td> <a class="btn btn-primary" href="/order/{{$element.ID}}" role="button">Get</a> </td>
+        {{end}}
+        <td></td>
     </tr>
     {{end}}
     </tbody>
